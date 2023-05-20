@@ -1,0 +1,49 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lista de Usuarios</h2>
+<br />
+
+<div>
+    <div>
+        @Html.ActionLink("Agregar Usuario","Form","Usuario", htmlAttributes: new { @class = "btn btn-success"} )
+    </div>
+    <br />
+
+    <div>
+        <table class=" table table-bordered table-responsive table-hover">
+            <thead>
+                <tr>
+                    <td class="text-center" style="font-weight:bold;">Editar</td>
+
+                    <td class="text-center" style="display:none">IdUsuario</td>
+                    <td class="text-center" style="font-weight:bold;">Nombre</td>
+                    <td class="text-center" style="font-weight:bold;">FechaNacimiento</td>
+                    <td class="text-center" style="font-weight:bold;">Rol</td>
+
+                    <td class="text-center" style="font-weight:bold;">Eliminar</td>
+                </tr>
+            </thead>
+            @foreach (ML.Usuario usuario in Model.Usuarios)
+            {
+                <tbody>
+                    <tr>
+                        <td class="text-center"><a class="btn btn-warning" href="@Url.Action("Form","Usuario", new { IdUsuario = usuario.IdUsuario})"></a></td>
+
+                        <td class="text-center" style="display:none">@usuario.IdUsuario</td>
+                        <td class="text-center" style="font-weight:bold;">@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno</td>
+                        <td class="text-center" style="font-weight:bold;">@usuario.FechaNacimiento</td>
+                        <td class="text-center" style="display:none">@usuario.Rol.IdRol</td>
+                        <td class="text-center" style="font-weight:bold;">@usuario.Rol.NombreRol</td>
+                        
+                        <td class="text-center"><a class="btn btn-danger" href="@Url.Action("Delete","Usuario", new { IdUsuario = usuario.IdUsuario})"></a></td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+</div>
+
