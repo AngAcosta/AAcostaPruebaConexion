@@ -12,6 +12,7 @@ namespace PL.Controllers
         public ActionResult GetAll()
         {
             ML.Usuario usuario = new ML.Usuario();
+            //ML.Result result = BL.Usuario.GetAll();
             ML.Result result = BL.Usuario.Select();
 
             if (result.Correct)
@@ -36,7 +37,8 @@ namespace PL.Controllers
             }
             else
             {
-                result = BL.Usuario.GetById(IdUsuario.Value);
+                //result = BL.Usuario.GetById(IdUsuario.Value);
+                result = BL.Usuario.SelectById(IdUsuario.Value);
                 usuario = (ML.Usuario)result.Object;
 
                 return View(usuario);
@@ -50,7 +52,8 @@ namespace PL.Controllers
 
             if (usuario.IdUsuario == 0)
             {
-                result = BL.Usuario.Add(usuario);
+                //result = BL.Usuario.Add(usuario);
+                result = BL.Usuario.AddMySQL(usuario);
 
                 if (result.Correct)
                 {
@@ -63,7 +66,8 @@ namespace PL.Controllers
             }
             else
             {
-                result = BL.Usuario.Update(usuario);
+                //result = BL.Usuario.Update(usuario);
+                result = BL.Usuario.UpdateMySQL(usuario);
 
                 if (result.Correct)
                 {
@@ -78,7 +82,8 @@ namespace PL.Controllers
 
         public ActionResult Delete(int IdUsuario)
         {
-            ML.Result result = BL.Usuario.Delete(IdUsuario);
+            //ML.Result result = BL.Usuario.Delete(IdUsuario);
+            ML.Result result = BL.Usuario.DeleteMySQL(IdUsuario);
 
             if (result.Correct)
             {
