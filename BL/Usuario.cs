@@ -287,15 +287,13 @@ namespace BL
                 using (MySqlConnection context = new MySqlConnection(DL_MySQL.Conexio.ConnectionString()))
                 {
                     var query = "INSERT INTO `Usuario" +
-                        "`(`IdUsuario`" +
-                        ", `Nombre`" +
+                        "`(`Nombre`" +
                         ", `ApellidoPaterno`" +
                         ", `ApellidoMaterno`" +
                         ", `FechaNacimiento`" +
                         ", `IdRol`) " +
                         "VALUES" +
-                        "('@IdUsuario'" +
-                        ", '@Nombre'" +
+                        "( '@Nombre'" +
                         ", '@ApellidoPaterno'" +
                         ", '@ApellidoMaterno'" +
                         ", '@FechaNacimiento'" +
@@ -307,25 +305,22 @@ namespace BL
                         cmd.Connection = context;
                         cmd.CommandText = query;
 
-                        MySqlParameter[] collection = new MySqlParameter[6];
+                        MySqlParameter[] collection = new MySqlParameter[5];
 
-                        collection[0] = new MySqlParameter("IdUsuario", MySqlDbType.Int32);
-                        collection[0].Value = usuario.IdUsuario;
+                        collection[0] = new MySqlParameter("Nombre", MySqlDbType.VarChar);
+                        collection[0].Value = usuario.Nombre;
 
-                        collection[1] = new MySqlParameter("Nombre", MySqlDbType.VarChar);
-                        collection[1].Value = usuario.Nombre;
+                        collection[1] = new MySqlParameter("ApellidoPaterno", MySqlDbType.VarChar);
+                        collection[1].Value = usuario.ApellidoPaterno;
 
-                        collection[2] = new MySqlParameter("ApellidoPaterno", MySqlDbType.VarChar);
-                        collection[2].Value = usuario.ApellidoPaterno;
+                        collection[2] = new MySqlParameter("ApellidoMaterno", MySqlDbType.VarChar);
+                        collection[2].Value = usuario.ApellidoMaterno;
 
-                        collection[3] = new MySqlParameter("ApellidoMaterno", MySqlDbType.VarChar);
-                        collection[3].Value = usuario.ApellidoMaterno;
+                        collection[3] = new MySqlParameter("FechaNacimiento", MySqlDbType.Date);
+                        collection[3].Value = usuario.FechaNacimiento;
 
-                        collection[4] = new MySqlParameter("FechaNacimiento", MySqlDbType.Date);
-                        collection[4].Value = usuario.FechaNacimiento;
-
-                        collection[5] = new MySqlParameter("IdRol", MySqlDbType.Int32);
-                        collection[5].Value = usuario.Rol.IdRol;
+                        collection[4] = new MySqlParameter("IdRol", MySqlDbType.Int32);
+                        collection[4].Value = usuario.Rol.IdRol;
 
                         cmd.Parameters.AddRange(collection);
                         cmd.Connection.Open();
@@ -345,6 +340,60 @@ namespace BL
                 result.Correct = false;
                 result.Exception = ex;
             }
+            return result;
+        }
+
+        public static ML.Result Select()
+        {
+            ML.Result result = new ML.Result();
+
+            try
+            {
+                using (MySqlConnection context = new MySqlConnection(DL_MySQL.Conexio.ConnectionString()))
+                {
+                    var query = "SELECT `IdUsuario`, `Nombre`, `ApellidoPaterno`, `ApellidoMaterno`, `FechaNacimiento`, `IdRol` FROM `Usuario`";
+
+                    using (MySqlCommand cmd = new MySqlCommand())
+                    {
+                        cmd.CommandText = query;
+                        cmd.Connection = context;
+
+                        DataTable usuarioTable = new DataTable();
+
+                        MySqlDataAdapter sqlDataAdapter = new MySqlDataAdapter(cmd);
+
+                        sqlDataAdapter.Fill(usuarioTable);
+
+                        if (usuarioTable.Rows.Count > 0)
+                        {
+                            result.Objects = new List<object>();
+
+                            foreach (DataRow row in usuarioTable.Rows)
+                            {
+                                ML.Usuario usuario = new ML.Usuario();
+
+                                usuario.IdUsuario = (int)row[0];
+                                usuario.Nombre = row[1].ToString();
+                                usuario.ApellidoPaterno = row[2].ToString();
+                                usuario.ApellidoMaterno = row[3].ToString();
+                                usuario.FechaNacimiento = row[4].ToString();
+
+                                usuario.Rol = new ML.Rol();
+                                usuario.Rol.IdRol = (int)row[5];
+
+                                result.Objects.Add(usuario);
+                            }
+                        }
+                        result.Correct = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Correct = false;
+                result.Exception = ex;
+            }
+
             return result;
         }
     }

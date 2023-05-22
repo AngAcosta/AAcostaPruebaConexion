@@ -36,8 +36,8 @@
                         <td class="text-center" style="display:none">@usuario.IdUsuario</td>
                         <td class="text-center" style="font-weight:bold;">@usuario.Nombre @usuario.ApellidoPaterno @usuario.ApellidoMaterno</td>
                         <td class="text-center" style="font-weight:bold;">@usuario.FechaNacimiento</td>
-                        <td class="text-center" style="display:none">@usuario.Rol.IdRol</td>
-                        <td class="text-center" style="font-weight:bold;">@usuario.Rol.NombreRol</td>
+                       @* <td class="text-center" style="display:none">@usuario.Rol.IdRol</td>*@
+                        <td class="text-center" style="font-weight:bold;">@usuario.Rol.IdRol</td>
                         
                         <td class="text-center"><a class="btn btn-danger" href="@Url.Action("Delete","Usuario", new { IdUsuario = usuario.IdUsuario})"></a></td>
                     </tr>

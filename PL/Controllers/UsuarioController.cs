@@ -12,7 +12,7 @@ namespace PL.Controllers
         public ActionResult GetAll()
         {
             ML.Usuario usuario = new ML.Usuario();
-            ML.Result result = BL.Usuario.GetAll();
+            ML.Result result = BL.Usuario.Select();
 
             if (result.Correct)
             {
