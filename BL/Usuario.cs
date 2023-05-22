@@ -43,6 +43,7 @@ namespace BL
                         collection[3] = new SqlParameter("FechaNacimiento", SqlDbType.VarChar);
                         collection[3].Value = usuario.FechaNacimiento;
 
+                        usuario.Rol = new ML.Rol();
                         collection[4] = new SqlParameter("IdRol", SqlDbType.Int);
                         collection[4].Value = usuario.Rol.IdRol;
 
@@ -240,11 +241,11 @@ namespace BL
                         collection[0] = new SqlParameter("IdUsuario", SqlDbType.Int);
                         collection[0].Value = IdUsuario;
 
-                        cmd.Parameters.Add(collection);
+                        cmd.Parameters.AddRange(collection);
 
                         DataTable usuarioTable = new DataTable();
 
-                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+                        SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
 
                         sqlDataAdapter.Fill(usuarioTable);
 
@@ -259,6 +260,8 @@ namespace BL
                             usuario.ApellidoPaterno = row[2].ToString();
                             usuario.ApellidoMaterno = row[3].ToString();
                             usuario.FechaNacimiento = row[4].ToString();
+
+                            usuario.Rol = new ML.Rol();
                             usuario.Rol.IdRol = (int)row[5];
                             usuario.Rol.NombreRol = row[6].ToString();
 
